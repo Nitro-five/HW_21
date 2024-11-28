@@ -6,12 +6,20 @@ from django.shortcuts import render, redirect
 from .forms import CommentForm
 from .models import Post, Profile
 
-
 def home(request):
+    """
+    Главная страница блога.
+    Получает все посты и передает их в шаблон 'home.html' для отображения.
+    """
     posts = Post.objects.all()
     return render(request, 'home.html', {'posts': posts})
 
 def post_detail(request, post_id):
+    """
+    Страница с подробной информацией о посте и комментариями.
+    При GET-запросе отображает пост и его комментарии.
+    При POST-запросе добавляет новый комментарий и отправляет уведомление автору поста.
+    """
     post = Post.objects.get(id=post_id)
     comments = post.comments.all()
     if request.method == 'POST':
@@ -33,6 +41,12 @@ def post_detail(request, post_id):
     return render(request, 'post_detail.html', {'post': post, 'comments': comments, 'form': form})
 
 def register(request):
+    """
+    Страница регистрации нового пользователя.
+    При GET-запросе отображает форму регистрации.
+    При POST-запросе сохраняет нового пользователя и создаёт профиль.
+    Также отправляется письмо с подтверждением регистрации.
+    """
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -52,6 +66,11 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 def login_view(request):
+    """
+    Страница входа пользователя.
+    При GET-запросе отображает форму для входа.
+    При POST-запросе проверяет данные формы и выполняет вход.
+    """
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -63,5 +82,9 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 def logout_view(request):
+    """
+    Страница выхода пользователя.
+    Выходит из системы и перенаправляет на страницу входа.
+    """
     logout(request)
     return redirect('login')
