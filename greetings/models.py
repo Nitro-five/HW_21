@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
 
+
 class Category(models.Model):
     """
     Модель для категории поста.
@@ -20,14 +21,14 @@ class Post(models.Model):
     """
     Модель для поста блога.
     Каждый пост имеет заголовок (title), содержание (content),
-    дату создания (created_at), категорию (category) и теги (tags).
+    дату создания (created_at), категорию (category), теги (tags) и автора (author).
     """
-    objects = None
     title = models.CharField(max_length=100)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     tags = TaggableManager()
+    author = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         """

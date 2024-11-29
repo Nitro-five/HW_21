@@ -1,13 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Blog</title>
-</head>
-<body>
-    <h1>Blog</h1>
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1>Welcome to My Blog</h1>
+<ul class="list-group">
     {% for post in posts %}
-        <h2><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h2>
-        <p>{{ post.content }}</p>
+        <li class="list-group-item">
+            <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
+        </li>
     {% endfor %}
-</body>
-</html>
+</ul>
+{% endblock %}
